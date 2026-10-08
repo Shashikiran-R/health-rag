@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // When deployed to Vercel, this API_BASE_URL should be updated to point to the live Railway backend URL.
             // Example: const API_BASE_URL = 'https://your-m2rag-backend.up.railway.app';
-            const API_BASE_URL = ''; // Leave empty for local same-origin, or set to 'http://localhost:8000' for local cross-origin
+            const API_BASE_URL = 'https://web-production-c27cc.up.railway.app'; // Leave empty for local same-origin, or set to 'http://localhost:8000' for local cross-origin
             const endpoint = API_BASE_URL ? `${API_BASE_URL}/api/chat` : '/api/chat';
 
             const response = await fetch(endpoint, {
