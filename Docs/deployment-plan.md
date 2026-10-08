@@ -1,68 +1,72 @@
-# M2Rag Deployment Plan (Streamlit)
+# M2Rag Deployment Plan
 
-This document outlines the strategy for transitioning the M2Rag project from a FastAPI-based backend with static HTML/JS frontend to a unified Streamlit application, and deploying it to the Streamlit Community Cloud.
+This document outlines the strategy for deploying the M2Rag project, separating the frontend and backend deployments to leverage the strengths of Vercel and Railway, respectively.
 
 ## 1. Objectives
 
-- Consolidate the frontend and backend into a single Streamlit application.
+- Deploy the FastAPI backend to Railway.
+- Deploy the HTML/JS frontend to Vercel.
 - Maintain existing RAG functionality, including ChromaDB retrieval, guardrails, and LLM generation.
-- Deploy the application seamlessly on Streamlit Community Cloud (or another preferred cloud host) for easy access.
+- Ensure seamless communication between the Vercel-hosted frontend and the Railway-hosted backend using CORS.
 
-## 2. Architecture Changes
+## 2. Architecture
 
-**Current Architecture:**
-- **Backend:** FastAPI (`main.py`, `src/api/routes.py`) serving a `/chat` endpoint.
-- **Frontend:** Static HTML/JS in `src/static/index.html`.
-- **Vector DB:** Local ChromaDB (`chroma_db/`).
+- **Backend (Railway):** FastAPI (`main.py`, `src/api/routes.py`) serving the API endpoints (e.g., `/chat`). Railway is well-suited for Python applications and Docker-based deployments.
+- **Frontend (Vercel):** Static HTML/CSS/JS (`src/static/index.html`, `src/static/app.js`, `src/static/style.css`). Vercel provides excellent global CDN delivery for static assets and frontend applications.
+- **Vector DB:** Local ChromaDB (`chroma_db/`). In a production setting, this should ideally be hosted on a persistent volume or a managed vector database service, but for this deployment, it will be bundled with the backend image or mounted via a persistent volume on Railway.
 
-**Proposed Architecture (Streamlit):**
-- **Unified App:** A single `app.py` Streamlit script replacing FastAPI and HTML/JS. Streamlit handles both the UI and the backend logic natively.
-- **Backend Logic:** Directly integrate `src.generation.answer_generator`, `src.guardrails.scope_guard`, and `src.retrieval.retriever` within the Streamlit event loop.
-- **Vector DB:** Continue using ChromaDB. Since ChromaDB runs in-memory or from local disk, Streamlit Cloud can load the embedded database from the repository directly. (Note: The `chroma_db` folder must be committed to the repo, or embeddings must be generated dynamically on app startup, which isn't recommended due to timeout constraints).
+## 3. Step-by-Step Deployment Plan
 
-## 3. Step-by-Step Migration Plan
+### Phase 1: Backend Deployment on Railway
 
-### Step 1: Create the Streamlit App (`app.py`)
-1. Create an `app.py` file in the root of the project.
-2. Build the chat interface using `st.chat_input` and `st.chat_message`.
-3. Store the chat history in `st.session_state` to maintain the conversation context.
-4. Hook up the user input to the existing RAG pipeline (`ChatEngine` or direct pipeline execution).
+1. **Prepare for Railway:**
+   - Ensure `requirements.txt` is up-to-date with all backend dependencies (`fastapi`, `uvicorn`, `chromadb`, `sentence-transformers`, `groq`, etc.).
+   - Ensure the application starts correctly using a `Procfile` or Railway start command, e.g., `uvicorn main:app --host 0.0.0.0 --port $PORT`.
 
-### Step 2: Manage Environment Variables and Dependencies
-1. Add `streamlit` to `requirements.txt`.
-2. Ensure all other required dependencies (like `chromadb`, `sentence-transformers`, `groq`, `python-dotenv`) are listed in `requirements.txt`.
-3. In local testing, use `.env` to manage API keys. In Streamlit Cloud, move these secrets to the Streamlit Cloud **Secrets Management** dashboard.
+2. **CORS Configuration:**
+   - Update `main.py` or `src/api/routes.py` to configure CORS middleware. Initially, allow `*` or localhost for testing, but eventually restrict it to the Vercel deployment URL.
 
-### Step 3: Handle the ChromaDB Persistence Directory
-1. The `.gitignore` must be checked to ensure `chroma_db/` is **not** ignored if we want Streamlit Cloud to load the pre-computed embeddings.
-2. *Alternative:* If `chroma_db/` is too large for GitHub, we can store it in cloud storage (like AWS S3) and download it at startup, or dynamically re-ingest the data on the first run (not recommended for production apps).
-3. Update `src/config.py` to ensure paths point correctly to the relative `chroma_db` location.
+3. **Deploy to Railway:**
+   - Connect the GitHub repository to Railway.
+   - Provision a new service from the repository.
+   - Add necessary Environment Variables in the Railway dashboard (e.g., `GROQ_API_KEY`, etc.).
+   - Add a persistent volume in Railway if the `chroma_db` directory needs to persist across redeployments, or ensure the vector DB is built/bundled correctly during the deployment process.
 
-### Step 4: Local Testing
-1. Run `pip install streamlit`.
-2. Start the app locally with `streamlit run app.py`.
-3. Test edge cases (out of scope questions, complex queries) to ensure the guardrails and the generator work perfectly within the Streamlit loop.
+### Phase 2: Frontend Deployment on Vercel
 
-### Step 5: Deployment to Streamlit Community Cloud
-1. Push the updated codebase (including `app.py`, updated `requirements.txt`, and the `chroma_db/` directory) to a GitHub repository.
-2. Log into [Streamlit Community Cloud](https://share.streamlit.io/).
-3. Connect your GitHub account and select the repository.
-4. Set the Main file path to `app.py`.
-5. Under "Advanced Settings", add your API Keys (`GROQ_API_KEY`, etc.) as secrets.
-6. Click **Deploy!**
+1. **Prepare Frontend Assets:**
+   - Extract the contents of `src/static` into a separate directory if needed, or simply configure Vercel to serve from the `src/static` directory.
+   - Update `app.js` API call endpoints to point to the live Railway backend URL instead of `http://localhost:8000`.
+
+2. **Deploy to Vercel:**
+   - Connect the GitHub repository to Vercel.
+   - Set the Root Directory to `src/static` (or wherever the frontend files are located).
+   - Leave the build command empty (since it's plain HTML/JS).
+   - Deploy the project.
+
+### Phase 3: Integration and Testing
+
+1. **Update CORS on Backend:**
+   - Once the Vercel deployment is live, copy the generated Vercel URL.
+   - Update the Railway backend's `main.py` CORS origins to explicitly allow the Vercel URL.
+   - Trigger a redeployment on Railway to apply the changes.
+
+2. **End-to-End Testing:**
+   - Access the Vercel frontend URL.
+   - Send chat messages and verify that the request successfully hits the Railway backend and returns a RAG-augmented response.
+   - Test edge cases (out of scope questions, complex queries) to ensure the guardrails and the generator work perfectly.
 
 ## 4. Potential Risks & Mitigations
 
-- **Database Size on GitHub:** If `chroma_db/` exceeds GitHub's file limits (100MB per file), it will cause push errors.
-  - *Mitigation:* Ensure `chunks.jsonl` and the vector database files remain small. If they grow, we might need to use `git-lfs` or external storage.
-- **Memory Limits on Streamlit Cloud:** Free tier provides limited RAM (~1GB). SentenceTransformers might consume significant memory when loaded.
-  - *Mitigation:* If `BAAI/bge-large-en-v1.5` causes Out of Memory (OOM) errors on Streamlit Cloud, downgrade to a smaller model (e.g., `all-MiniLM-L6-v2`) in `src/config.py` and re-ingest the data.
+- **ChromaDB Persistence on Railway:** By default, Railway's file system is ephemeral. If new documents are added or the database is updated dynamically, the changes will be lost on redeploy.
+  - *Mitigation:* Attach a Persistent Volume to the Railway service and configure `chroma_db` to save data to that volume path.
+- **Cold Starts:** If the Railway service goes to sleep (depending on the plan), the first query might take a while to spin up the FastAPI app and load the embedding models.
+  - *Mitigation:* Use a paid Railway plan or set up a cron job/pinger to keep the service awake.
+- **CORS Issues:** Browsers might block requests if CORS is not configured perfectly.
+  - *Mitigation:* Carefully configure FastAPI's `CORSMiddleware` and check the browser console for specific CORS errors.
 
 ## 5. Timeline
 
-- **Phase 1 (Frontend Replacement):** 1-2 hours. Writing the Streamlit UI and wiring it to the backend functions.
-- **Phase 2 (Local Testing & Refinement):** 1 hour. Ensuring chat history, error states, and citations display nicely.
-- **Phase 3 (Deployment & Environment config):** 1 hour. Pushing to GitHub, configuring Streamlit Cloud, and testing live.
-
----
-*Ready to proceed with creating `app.py` whenever you are!*
+- **Phase 1 (Backend - Railway):** 1-2 hours. Configuring environment, checking paths, and setting up persistent volumes if necessary.
+- **Phase 2 (Frontend - Vercel):** 30 minutes. Pointing API URLs and deploying static files.
+- **Phase 3 (Integration & Final Polish):** 1 hour. Updating CORS, testing cross-origin requests, and handling edge cases.
