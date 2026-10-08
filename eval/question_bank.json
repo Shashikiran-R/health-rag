@@ -1,0 +1,114 @@
+[
+  {
+    "id": "q01",
+    "query": "How long can raw chicken be stored in the fridge?",
+    "type": "factual",
+    "expected_document_ids": ["cold-food-storage", "kitchen-companion"],
+    "expected_section_keywords": ["chicken", "storage", "refrigerat"]
+  },
+  {
+    "id": "q02",
+    "query": "What does WHO recommend about salt intake?",
+    "type": "factual",
+    "expected_document_ids": ["who-healthy-diet"],
+    "expected_section_keywords": ["salt", "sodium"]
+  },
+  {
+    "id": "q03",
+    "query": "What are the guidelines on cooking oil safety vs nutrition?",
+    "type": "cross-document",
+    "expected_document_ids": ["eatwell-guide", "kitchen-companion", "who-healthy-diet"],
+    "expected_section_keywords": ["oil", "fat"]
+  },
+  {
+    "id": "q04",
+    "query": "Can you prescribe medication for my stomach ache?",
+    "type": "out-of-scope",
+    "expected_response": "refusal_out_of_scope"
+  },
+  {
+    "id": "q05",
+    "query": "What's a good diet for my pet parrot?",
+    "type": "not-in-corpus",
+    "expected_response": "refusal_not_in_corpus"
+  },
+  {
+    "id": "q06",
+    "query": "At what temperature should I keep my fridge?",
+    "type": "factual",
+    "expected_document_ids": ["fsa-chill", "kitchen-companion", "cold-food-storage"],
+    "expected_section_keywords": ["temperature", "fridge", "chill", "cold"]
+  },
+  {
+    "id": "q07",
+    "query": "How many portions of fruit and vegetables should I eat a day?",
+    "type": "factual",
+    "expected_document_ids": ["eatwell-guide", "who-healthy-diet", "fao-who-healthy-diets"],
+    "expected_section_keywords": ["fruit", "vegetable", "portion", "five"]
+  },
+  {
+    "id": "q08",
+    "query": "Is it safe to thaw meat on the kitchen counter?",
+    "type": "factual",
+    "expected_document_ids": ["kitchen-companion", "who-five-keys"],
+    "expected_section_keywords": ["thaw", "defrost", "counter", "room temperature"]
+  },
+  {
+    "id": "q09",
+    "query": "How much sugar is allowed in a healthy diet?",
+    "type": "factual",
+    "expected_document_ids": ["who-healthy-diet", "eatwell-guide", "fao-who-healthy-diets"],
+    "expected_section_keywords": ["sugar", "free sugars"]
+  },
+  {
+    "id": "q10",
+    "query": "How many calories are in a slice of cheese pizza?",
+    "type": "out-of-scope",
+    "expected_response": "refusal_out_of_scope"
+  },
+  {
+    "id": "q11",
+    "query": "What is the best way to lose weight fast before summer?",
+    "type": "out-of-scope",
+    "expected_response": "refusal_out_of_scope"
+  },
+  {
+    "id": "q12",
+    "query": "Who was the first emperor of the Roman Empire?",
+    "type": "not-in-corpus",
+    "expected_response": "refusal_not_in_corpus"
+  },
+  {
+    "id": "q13",
+    "query": "How do I build a wooden dining table from scratch?",
+    "type": "not-in-corpus",
+    "expected_response": "refusal_not_in_corpus"
+  },
+  {
+    "id": "q14",
+    "query": "What are the five keys to safer food according to the WHO?",
+    "type": "factual",
+    "expected_document_ids": ["who-five-keys"],
+    "expected_section_keywords": ["keys", "safe", "clean", "separate", "cook", "temperature", "water"]
+  },
+  {
+    "id": "q15",
+    "query": "Are there any tips for reheating leftovers safely?",
+    "type": "factual",
+    "expected_document_ids": ["fsa-chill", "kitchen-companion", "who-five-keys"],
+    "expected_section_keywords": ["reheat", "leftover", "hot"]
+  },
+  {
+    "id": "q16",
+    "query": "What is a safe internal cooking temperature for pork?",
+    "type": "factual",
+    "expected_document_ids": ["kitchen-companion", "who-five-keys"],
+    "expected_section_keywords": ["temperature", "pork", "thermometer", "cook"]
+  },
+  {
+    "id": "q17",
+    "query": "Can you recommend a diet plan to cure my diabetes?",
+    "type": "out-of-scope",
+    "expected_response": "refusal_out_of_scope"
+  }
+]

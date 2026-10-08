@@ -1,0 +1,8 @@
+sentence-transformers
+chromadb
+groq
+pytest
+python-dotenv
+fastapi
+uvicorn
+streamlit
