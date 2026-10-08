@@ -11,9 +11,10 @@ class Retriever:
                 name=COLLECTION_NAME,
                 embedding_function=self.emb_fn
             )
-        except ValueError:
-            self.collection = self.client.get_collection(
-                name=COLLECTION_NAME
+        except Exception:
+            self.collection = self.client.get_or_create_collection(
+                name=COLLECTION_NAME,
+                embedding_function=self.emb_fn
             )
 
     def search(self, query: str, k: int = 5, document_id: str = None):
