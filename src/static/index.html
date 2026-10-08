@@ -1,52 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dietary Guidance AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>M2Rag - Dietary Guidance Assistant</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = { "darkMode": "class", "theme": { "extend": { "colors": { "on-secondary": "#003825", "outline-variant": "#3c4a42", "surface-container": "#1a211d", "secondary-fixed": "#85f8c4", "surface-bright": "#343b36", "on-tertiary": "#472a00", "primary-container": "#10b981", "on-secondary-container": "#00311f", "tertiary-fixed": "#ffddb8", "surface-container-high": "#242c27", "on-tertiary-fixed": "#2a1700", "inverse-surface": "#dde4dd", "on-primary": "#003824", "surface-container-lowest": "#09100c", "on-error-container": "#ffdad6", "surface-dim": "#0e1511", "surface-variant": "#2f3632", "on-primary-container": "#00422b", "primary-fixed": "#6ffbbe", "secondary-container": "#25a475", "inverse-primary": "#006c49", "tertiary-fixed-dim": "#ffb95f", "secondary-fixed-dim": "#68dba9", "on-tertiary-container": "#523200", "on-background": "#dde4dd", "inverse-on-surface": "#2b322d", "on-error": "#690005", "surface-tint": "#4edea3", "error": "#ffb4ab", "on-tertiary-fixed-variant": "#653e00", "on-primary-fixed": "#002113", "surface-container-highest": "#2f3632", "on-primary-fixed-variant": "#005236", "outline": "#86948a", "surface": "#0e1511", "on-secondary-fixed-variant": "#005137", "tertiary": "#ffb95f", "on-surface-variant": "#bbcabf", "secondary": "#68dba9", "on-secondary-fixed": "#002114", "primary-fixed-dim": "#4edea3", "error-container": "#93000a", "background": "#0e1511", "primary": "#4edea3", "tertiary-container": "#e29100", "surface-container-low": "#161d19", "on-surface": "#dde4dd" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-xs": "0.25rem", "space-lg": "1.5rem", "space-xl": "2rem", "margin": "2rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter": "1.5rem" }, "fontFamily": { "headline-md": ["Inter"], "headline-lg-mobile": ["Inter"], "code-sm": ["Inter"], "body-sm": ["Inter"], "body-lg": ["Inter"], "body-md": ["Inter"], "headline-lg": ["Inter"], "label-md": ["Inter"], "headline-sm": ["Inter"] }, "fontSize": { "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "code-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }], "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }] } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
 </head>
-<body>
-    <div class="app-container">
-        <header class="glass-panel header">
-            <div class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-                <h1>Dietary Guidance AI</h1>
+<body class="bg-surface font-body text-on-surface">
+  <div>
+    <main class="relative bg-surface min-h-screen">
+      <div class="flex flex-col w-full pb-28">
+        <!-- Top Banner -->
+        <div class="px-space-xl py-space-lg bg-surface-container-low flex flex-col md:flex-row justify-between items-start md:items-center gap-space-md shadow-sm">
+          <div class="flex flex-col gap-space-xs">
+            <div class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">nutrition</span>
+              <h1 class="text-headline-lg font-headline-lg text-on-surface">M2Rag - Dietary Guidance Assistant</h1>
             </div>
-            <p class="subtitle">Evidence-based RAG Chatbot</p>
-        </header>
+            <p class="text-body-md text-on-surface-variant">Evidence-based RAG conversational interface trained exclusively on verified public health guidelines.</p>
+          </div>
+          <div class="flex items-center gap-space-sm bg-surface-container-high px-space-md py-space-sm rounded-xl">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+            <span class="text-label-md text-on-surface font-bold uppercase tracking-wider">7 Grounded Sources</span>
+          </div>
+        </div>
 
-        <main class="chat-container glass-panel">
-            <div id="chat-messages" class="chat-messages">
-                <div class="message bot-message">
-                    <div class="avatar">AI</div>
-                    <div class="content">
-                        Hello! I am your dietary guidance assistant. I can answer questions about food safety and dietary guidelines based on our corpus of 7 documents. How can I help you today?
-                    </div>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-space-xl p-space-xl">
+          <!-- Left Sidebar Details -->
+          <div class="lg:col-span-1 flex flex-col gap-space-lg">
+            <div class="bg-surface-container p-space-lg rounded-xl flex flex-col gap-space-md shadow-md">
+              <div class="flex items-center gap-space-sm">
+                <span class="material-symbols-outlined text-primary">info</span>
+                <h2 class="text-headline-sm font-headline-sm text-on-surface">About M2Rag</h2>
+              </div>
+              <p class="text-body-sm text-on-surface-variant leading-relaxed">
+                M2Rag is a specialized retrieval-augmented generation engine designed to answer nutritional queries strictly from peer-reviewed public health corpora, eliminating hallucinations.
+              </p>
+            </div>
+            <div class="bg-surface-container p-space-lg rounded-xl flex flex-col gap-space-md shadow-md">
+              <h3 class="text-label-md text-primary uppercase font-bold tracking-wider">Supported Guidelines (7)</h3>
+              <ul class="flex flex-col gap-space-xs text-body-sm text-on-surface-variant">
+                <li class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>WHO Healthy Diet</li>
+                <li class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>Eatwell Guide</li>
+                <li class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>USDA Kitchen Companion</li>
+                <li class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>FAO Sustainable Diets</li>
+                <li class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>EFSA Nutrient Values</li>
+                <li class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>AHA Heart-Healthy</li>
+                <li class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>Dietary Guidelines for Americans</li>
+              </ul>
+            </div>
+            <!-- Warning Box -->
+            <div class="bg-tertiary-container/20 border-l-4 border-tertiary p-space-md rounded-r-xl flex items-start gap-space-md">
+              <span class="material-symbols-outlined text-tertiary shrink-0">warning</span>
+              <div class="text-body-sm text-white leading-normal">
+                <strong class="font-headline-sm text-tertiary block mb-1">Disclaimer</strong>
+                M2Rag does not provide medical advice, diagnosis, or personalized calorie/weight targets. Consult a clinical professional.
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Chat Feed -->
+          <div class="lg:col-span-3 flex flex-col gap-space-lg">
+            <!-- Quick Prompt Pills -->
+            <div class="flex flex-wrap items-center gap-space-sm bg-surface-container-low p-space-md rounded-xl">
+              <span class="text-label-md text-on-surface-variant mr-space-xs">Quick Queries:</span>
+              <button class="px-space-md py-space-xs bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface text-body-sm rounded-full transition-all cursor-pointer font-medium" onclick="window.triggerPrompt('What are the 5 keys to safer food?')">5 keys to safer food?</button>
+              <button class="px-space-md py-space-xs bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface text-body-sm rounded-full transition-all cursor-pointer font-medium" onclick="window.triggerPrompt('How long can raw chicken be stored in the fridge?')">Raw chicken fridge time?</button>
+              <button class="px-space-md py-space-xs bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface text-body-sm rounded-full transition-all cursor-pointer font-medium" onclick="window.triggerPrompt('What does WHO recommend about salt intake?')">WHO salt intake limit?</button>
+            </div>
+
+            <!-- Chat Log Container -->
+            <div class="flex flex-col gap-space-lg min-h-[400px]" id="chat-stream">
+              <!-- Initial Assistant Message -->
+              <div class="flex items-start gap-space-md">
+                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-on-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
                 </div>
+                <div class="bg-surface-container p-space-lg rounded-2xl rounded-tl-none max-w-2xl flex flex-col gap-space-md shadow-md">
+                  <div class="text-body-md text-on-surface leading-relaxed content-prose">
+                    Hello! I am your dietary guidance assistant. I can answer questions about food safety and dietary guidelines based on our corpus of 7 documents. How can I help you today?
+                  </div>
+                </div>
+              </div>
             </div>
-            
-            <div class="typing-indicator hidden" id="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            
-            <form id="chat-form" class="chat-input-area">
-                <input type="text" id="user-input" placeholder="Ask about food safety or dietary guidelines..." required autocomplete="off">
-                <button type="submit" id="send-button">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
-            </form>
-        </main>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="app.js"></script>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Fixed Chat Input Bar -->
+      <div class="fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-xl p-space-md border-t border-outline-variant/30 z-30 flex items-center justify-center">
+        <div class="max-w-4xl w-full flex items-center gap-space-md bg-surface-container-low px-space-md py-space-sm rounded-xl shadow-lg border border-outline-variant/20">
+          <span class="material-symbols-outlined text-on-surface-variant">chat_bubble</span>
+          <input class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant focus:outline-none text-body-md" id="user-input" onkeydown="if(event.key === 'Enter') window.handleChatSubmit()" placeholder="Ask about dietary guidelines, nutrient values, or food safety..." type="text"/>
+          <button class="px-space-lg py-space-sm bg-primary text-on-primary rounded-xl font-bold text-body-md hover:bg-primary-fixed transition-all cursor-pointer flex items-center gap-space-xs" onclick="window.handleChatSubmit()">
+            <span>Send</span>
+            <span class="material-symbols-outlined text-[16px]">send</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
