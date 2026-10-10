@@ -1,6 +1,6 @@
-# M2Rag - Dietary Guidance RAG Chatbot
+# Dietary Guidance RAG Chatbot
 
-M2Rag is a grounded, citation-bearing Retrieval-Augmented Generation (RAG) chatbot designed to answer questions based on 7 specific dietary guidance documents. It strictly answers from the provided sources and refuses out-of-scope queries (like medical advice, calorie targets, or personal weight recommendations).
+Dietary guidance assistant is a grounded, citation-bearing Retrieval-Augmented Generation (RAG) chatbot designed to answer questions based on 7 specific dietary guidance documents. It strictly answers from the provided sources and refuses out-of-scope queries (like medical advice, calorie targets, or personal weight recommendations).
 
 ## Architecture Overview
 
